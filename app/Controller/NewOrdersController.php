@@ -4,7 +4,7 @@ App::uses('Sanitize', 'Utility');
 
 class NewOrdersController extends AppController
 {
-    private $listname, $amount;
+
     var $name = 'neworders';
     public $codev;
     var $components = array('Wizard');
@@ -23,18 +23,18 @@ class NewOrdersController extends AppController
 
     function beforeFilter()
     {
-        if ($this->action != 'test')
-            $this->Wizard->steps = array(
-                'general',
-                'sender',
-                'verification',
-                'receiver',
-                'summary',
-                'payment',
-                array('bank' => array(
-                        'bank_confirmation',
-                        'bank_receipt',
-                        'finish'), 'cash' => array('cash_confirmation', )));
+
+        $this->Wizard->steps = array(
+            'general',
+            'sender',
+            'verification',
+            'receiver',
+            'summary',
+            'payment',
+            array('bank' => array(
+                    'bank_confirmation',
+                    'bank_receipt',
+                    'finish'), 'cash' => array('cash_confirmation', 'finish')));
 
         $this->Auth->allow('wizard');
     }
@@ -57,11 +57,12 @@ class NewOrdersController extends AppController
 
         // echo $this->Session->read('sender.last_Name');
         // print_r( $this->Session->read('Wizard.neworders.payment.Payment.paymentMethod'));
-       //print_r( $this->Session->read('Wizard.neworders.general.WizardForm.totalamount'));
+        //print_r( $this->Session->read('Wizard.neworders.general.WizardForm.totalamount'));
 
 
         //	print_r( $codev ) ;
-        print_r($this->Session->read('Wizard.neworders.general.country_receiver'));
+
+        //print_r($this->Session->read('Wizard.neworders.general.country_receiver'));
 
         switch ($step) {
 
@@ -85,7 +86,44 @@ class NewOrdersController extends AppController
                 $this->Session->write($this->data);
                 $this->set(compact('currencies', 'originCountries', 'siteCurrency',
                     'siteCountry', 'destinationCountries', 'Country'));
-                $this->break;
+                break;
+
+            case 'sender':
+
+
+                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                break;
+
+            case 'verification':
+
+
+                $this->set('title_for_layout', ' Wizard form - ' . $step);
+
+                $postalcodev = $this->Session->read('Wizard.neworders.sender.Sender.postal_code_sender');
+                $daycodev = $this->Session->read('Wizard.neworders.sender.Sender.dob_sender.day');
+
+
+                $postalcodev = substr($postalcodev, -2, 2);
+
+                $codev2 = $codev = $postalcodev + $daycodev;
+
+
+                $codev = Security::hash($codev, 'md5', true);
+
+                $this->set(compact('codev', 'codev2'));
+
+
+                break;
+
+            case 'receiver':
+
+                $countryname = $this->Session->read('Wizard.neworders.general.country_receiver');
+
+                $this->set(compact('countryname'));
+                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                break;
+
+
             case 'summary':
                 $this->set('title_for_layout', ' Wizard form - ' . $step);
 
@@ -104,6 +142,12 @@ class NewOrdersController extends AppController
 
 
                 break;
+
+            case 'payment':
+
+                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                break;
+
             case 'bank_confirmation':
                 $this->set('title_for_layout', ' Wizard form - ' . $step);
                 $fields = $this->Wizard->read();
@@ -113,54 +157,6 @@ class NewOrdersController extends AppController
 
                 break;
 
-            case 'sender':
-
-
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
-                break;
-
-            case 'verification':
-
-
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
-                
-                $postalcodev = $this->Session->read('Wizard.neworders.sender.Sender.postal_code_sender');
-                $daycodev = $this->Session->read('Wizard.neworders.sender.Sender.dob_sender.day');
-                
-
-                $postalcodev = substr($postalcodev, -2, 2);
-
-                $codev2 = $codev = $postalcodev + $daycodev;
-
-
-                $codev = Security::hash($codev, 'md5', true);
-
-                $this->set(compact('codev', 'codev2'));
-                // ECHO $codev.'<BR>';
-
-                // ECHO $codev2;
-
-
-                break;
-
-
-            case 'receiver':
-
-                $countryname = $this->Session->read('Wizard.neworders.general.country_receiver');
-
-                $this->set(compact('countryname'));
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
-                break;
-
-
-            case 'summary':
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
-                break;
-
-            case 'payment':
-
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
-                break;
 
             case 'bank_confirmation':
 
@@ -250,12 +246,10 @@ class NewOrdersController extends AppController
 
             $fields['sender']['Sender']['verification_code'] = $this->Session->read('Wizard.neworders.verification.NewCustomer.code');
 
-           
+
             $fields['sender']['Sender']['verification_code'] = $this->Session->read('Wizard.neworders.verification.NewCustomer.code');
 
-           $fields['sender']['Sender']['country_receiver'] = 
-           
-            $this->Sender->save($fields['sender']);
+            $fields['sender']['Sender']['country_receiver'] = $this->Sender->save($fields['sender']);
 
             $this->Receiver->save($fields['receiver']);
 
