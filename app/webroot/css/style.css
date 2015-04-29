@@ -1,0 +1,549 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+logind:none;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	margin:0px;
+	color:#3b3b3b;
+	font-weight:normal;
+}
+ul {
+	margin:0px;
+	padding:0px;
+}
+li {
+	list-style-type:none;
+	margin:0px;
+	font-weight:normal;
+}
+p {
+	margin:0px;
+	font-weight:normal;
+}
+h1, h2, h3, h4, h5, h6 {
+	margin:0px;
+	font-weight:normal;
+}
+a {
+	text-decoration:none;
+	font-weight:normal;
+}
+button {
+	margin:0px;
+	border:0px;
+	font-weight:normal;
+	padding:0px;
+}
+hr {
+	margin:0px;
+	font-weight:normal;
+}
+figure {
+	margin:0px;
+}
+.clear {
+	clear:both;
+}
+
+/****************main*****************/
+
+header{float:left; width:100%;}
+.home-logo {
+  float: left;
+}
+
+.top-header{float:left; width:100%; background:#161616; padding:10px 0;}
+
+.lft-header {
+  color: #ffffff;
+  float: left;
+  font-family: "Lucida Grande",sans-serif;
+  font-size: 14px;
+  
+  text-decoration: underline;
+}
+
+.lft-header:hover{text-decoration:none; color:#fff;}
+
+.right-header{float:right !important;}
+
+.top-nav{float:left;}
+
+.top-nav li{float:left; display:inline; color:#fff; font:14px "Lucida Grande", sans-serif; margin-left:5px;}
+
+.top-nav li a{color:#fff; font:14px sans-serif}
+
+.top-nav li a:hover{text-decoration:underline;}
+
+nav{float:left; width:100%;background: #ffd800; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffd800 0%, #ffae0d 68%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd800), color-stop(68%,#ffae0d)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffd800 0%,#ffae0d 68%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffd800 0%,#ffae0d 68%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffd800 0%,#ffae0d 68%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffd800 0%,#ffae0d 68%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd800', endColorstr='#ffae0d',GradientType=0 ); /* IE6-9 */
+
+
+}
+
+.navi {
+  float: left;
+  padding-left: 105px;
+}
+
+.navi li{float:left; display:inline; padding:16px 0; margin-right:13px;}
+
+.navi li a{font:16px "Lucida Grande", sans-serif; color:#161616;  padding: 27px 17px; transition:all 800ms linear 0s; -webkit-transition:all 800ms linear 0s; -moz-transition:all 800ms linear 0s; -ms-transition:all 800ms linear 0s;}
+
+.navi li a:hover, .navi li a.active {
+  background: none repeat scroll 0 0 #161616;
+  color: #ffffff;
+  padding: 27px 17px;
+  text-decoration:none;
+}
+
+#main{float:left; width:100%; position:relative;}
+
+.main-top {
+  background: none repeat scroll 0 0 #ffffff;
+  float: left;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  padding: 15px 0;
+}
+.map {
+  float: right;
+  position: absolute;
+  right: 225px;
+  top: 11px;
+}
+
+.last-update{float:left; width:100%; padding:15px 0;}
+
+.heading {
+  float: left;
+  font: 18px "Lucida Grande", sans-serif;
+  margin-bottom: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.updates-headings {
+  margin: 0 auto;
+   width: 700px;
+  overflow: hidden;
+  padding:7px 0;
+  margin-bottom:10px;
+}
+
+.updates-headings li {
+  display: inline;
+  float: left;
+  font: bold 15px "Lucida Grande", sans-serif;
+  text-align: center;
+  width: 140px;
+}
+
+.first-update {
+  background: none repeat scroll 0 0 #f4f3f3;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 7px 0;
+  width: 714px;
+}
+
+.first-update li {
+  display: inline;
+  float: left;
+  font:15px "Lucida Grande", sans-serif;
+  text-align: center;
+  width: 140px;
+}
+
+.first-update > li:first-child {
+  padding-left: 19px;
+  text-align: left;
+  width: 135px;
+}
+
+.second-update{
+  margin: 0 auto;
+  width: 714px;
+  overflow: hidden;
+  background:#fff;
+  padding:7px 0;
+}
+
+.second-update li {
+  display: inline;
+  float: left;
+  font:15px "Lucida Grande", sans-serif;
+  text-align: center;
+  width: 140px;
+}
+
+.second-update > li:first-child {
+  padding-left: 19px;
+  text-align: left;
+  width: 130px;
+}
+
+.first-update.last {
+  margin-bottom: 33px;
+}
+
+.last-update > p{float:left; width:100%; text-align:center; color:#767272; font:14px "Lucida Grande", sans-serif; margin-bottom:0; line-height:24px;}
+
+.last-update > p:first-child{ margin-top:20px;}
+
+.country-tab{float:left; width:100%; background:#161616; padding:12px 0px;}
+
+.countries{float:left; width:100%; text-align:center; margin:0;}
+
+.countries li {
+  display: inline;
+  margin-left: 18px;
+}
+
+.countries li a{color:#fff; font:16px  "Lucida Grande", sans-serif; transition:all 800ms linear 0s; -webkit-transition:all 800ms linear 0s; -moz-transition:all 800ms linear 0s; -ms-transition:all 800ms linear 0s;}
+
+.countries li a:hover, .countries li a.active{color:#f27903;}
+
+.main-bottom {
+  background: url("../img/yellow-bg.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+  float: left;
+  padding: 52px 0;
+  width: 100%;
+}
+
+.bottom-box {
+  background: none repeat scroll 0 0 #ffffff;
+  border-radius: 4px;
+  float: left;
+  transition:all 800ms linear 0s;
+  margin-left: 0 !important;
+  margin-right: 199px;
+   position: relative;
+   -webkit-transition:all 800ms linear 0s; -moz-transition:all 800ms linear 0s; -ms-transition:all 800ms linear 0s; -o-transition:all 800ms linear 0s;
+}
+.bottom-box:hover{box-shadow:0 0 4px #000000;}
+
+.bottom-box h2{background:#161616; text-align:center; width:100%; float:left; padding:8px 0; border-top-left-radius:4px; border-top-right-radius:5px; color:#fff; font:17px "Lucida Grande", sans-serif; margin:0;}
+
+.box-content {
+  float: left;
+  height: 250px;
+  padding: 15px 20px;
+  position: relative;
+  
+}
+.box-content > p {
+  color: #161616;
+  font: 14px/23px arial;
+}
+
+.read-more {
+  background: #343434; /* Old browsers */
+	background: -moz-linear-gradient(top,  #343434 0%, #1b1b1b 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#343434), color-stop(100%,#1b1b1b)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #343434 0%,#1b1b1b 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #343434 0%,#1b1b1b 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #343434 0%,#1b1b1b 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #343434 0%,#1b1b1b 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#343434', endColorstr='#1b1b1b',GradientType=0 ); /* IE6-9 */
+  border-radius: 10px;
+  color: #ffffff;
+
+  font: 14px Arial,Helvetica,sans-serif;
+  padding: 9px;
+  text-align: center;
+  width: 250px;
+  transition:all 900ms linear 0s; -webkit-transition:all 900ms linear 0s; -moz-transition:all 900ms linear 0s; -ms-transition:all 900ms linear 0s; -o-transition:all 900ms linear 0s;
+}
+
+.read-more:hover{color:#161616; text-decoration:none;
+background:#f9a600;
+
+
+}
+
+.bottom-box:last-child{margin-right:0px;}
+
+.box-img {
+  float: left;
+  position: absolute;
+  right: -16px;
+  top: -55px;
+}
+.box-img > img {
+  transform: rotate(0deg) scale(1);
+  transition: all 600ms linear 0s;
+}
+.box-img > img:hover {
+  transform: rotate(360deg) scale(1.2);
+}
+.currency-converter {
+  float: left;
+  width: 100%;
+  margin:0;
+}
+.currency-converter > li {
+  float: left;
+  margin: 1px 0;
+  width: 100%;
+}
+.currency-converter li label {
+  float: left;
+}
+
+.text-field {
+  float: right;
+  width: 77px;
+}
+.currency-converter li select {
+  float: right;
+  width: 166px;
+}
+.currency-converter span {
+  float: right;
+  font: 16px "Lucida Grande", sans-serif;
+  color: #161616;
+}
+.call-back {
+  float: left;
+  margin: 0 0;
+  padding-top: 50px;
+}
+.call-back > label {
+  color: #161616;
+  font: 16px/25px "Lucida Grande", sans-serif;
+  text-align: center;
+}
+
+footer {
+  background: none repeat scroll 0 0 #ffffff;
+  float: left;
+  padding: 43px 0 16px;
+  width: 100%;
+}
+
+.footer-div1{
+  float: left;
+   margin: 0 199px 0 0 !important;
+  text-align: center;
+
+}
+.footer-nav {
+  float: left;
+  margin: 0;
+  padding: 0 24%;
+  text-align: left;
+}
+
+.footer-nav li{float:left; width:100%; display:block;}
+
+.footer-nav li a {
+  color: #161616;
+  float: left;
+  font: 16px/24px "Lucida Grande", sans-serif;
+  transition:all 900ms linear 0s; -webkit-transition:all 900ms linear 0s; -moz-transition:all 900ms linear 0s; -ms-transition:all 900ms linear 0s; -o-transition:all 900ms linear 0s;
+}
+
+.footer-nav li a:hover{color:#f0a105;}
+
+.footer-div1.span3:nth-child(3) {
+  margin-right: 0 !important;
+}
+
+.social-icons {
+  float: left;
+  margin-top: 23px;
+  text-align: center;
+  width: 100%;
+}
+.social-icons > a {
+  margin-right: 12px;
+  transition:all 900ms linear 0s; -webkit-transition:all 900ms linear 0s; -moz-transition:all 900ms linear 0s; -ms-transition:all 900ms linear 0s; -o-transition:all 900ms linear 0s;
+}
+
+.social-icons > a:hover{opacity:0.6;}
+
+.copy-right{float:left; width:100%; text-align:center; padding:15px 0; background:#161616; color:#fff; font:14px/20px "Lucida Grande", sans-serif;}
+
+/**************home*****************/
+
+.home-map {
+  float: left;
+  height: 400px;
+  padding: 20px 0;
+  position: relative;
+  width: 100%;
+}
+
+.map-content {
+  float: left;
+  left: 180px;
+  position: absolute;
+  text-align: left;
+  top: 96px;
+  width: 30%;
+}
+.map-content > h4 {
+  font: 34px "Lucida Grande",sans-serif;
+  margin: 0 !important;
+}
+
+.map-content > h4 span{font-weight:bold; color:#ED9D57}
+
+.map-content > p {
+  font: 20px lucida grande,sans-serif;
+  color: #161616;
+  line-height: 24px;
+}
+
+.currency-update {
+  background: none repeat scroll 0 0 #ffffff;
+  border-radius: 4px;
+  float: left !important;
+  margin-left: 0 !important;
+  margin-right: 43px;
+  text-align: center;
+}
+
+.currency-heading{float:left; width:100%; background:#000; border-top-left-radius:4px; border-top-right-radius:4px; text-align:center; margin:0;font: 17px "Lucida Grande",sans-serif; color:#fff; padding:10px 0;margin-bottom: 10px;}
+
+/**************next-page**********/
+
+.top-content-div{
+  float: left;
+  height: 400px;
+  padding: 20px 0;
+  position: relative;
+  width: 100%;
+}
+
+/************map*****************/
+
+#slideshow img {
+  position: absolute;
+  right: 225px;
+  top: 11px;
+    z-index:8;
+    opacity: 0.0;
+}
+
+#slideshow img.active {
+    z-index:10;
+    opacity: 1.0;
+}
+
+#slideshow img.last-active {
+    z-index:9;
+}
+
+
+/**************login*****************/
+.login {
+  float: left;
+  height: 600px;
+  padding: 20px 0;
+  position: relative;
+  width: 100%;
+  margin-bottom: 3%;
+
+}
+
+.login-content {
+  float: left;
+  left: 125px;
+  position: absolute;
+  text-align: left;
+  top: 96px;
+  width: 73%;
+  height:250px;
+  box-shadow:0 0 4px #000000;
+  -webkit-transition:all 800ms linear 0s; -moz-transition:all 800ms linear 0s; -ms-transition:all 800ms linear 0s; -o-transition:all 800ms linear 0s;
+  border-radius: 4px;
+  transition:all 800ms linear 0s;
+}
+
+.login-content > h4 {
+  font: 34px "Lucida Grande",sans-serif;
+  margin: 0 !important;
+}
+.login-content h2 {
+	background:#161616; 
+	text-align:center; 
+	width:100%; float:left; 
+	padding: 16px 0px 16px 1px;
+	border-top-left-radius:4px; 
+	border-top-right-radius:5px; 
+	color:#fff; 
+	font:17px "Lucida Grande", sans-serif; 
+	margin:0;
+	}
+
+.login-content > h4 span{font-weight:bold; color:#ED9D57}
+
+.login-content > p {
+  font: 20px lucida grande,sans-serif;
+  color: #161616;
+  line-height: 24px;
+}
+
+.login-token {
+  float: right;
+  right: 205px;
+  position: absolute;
+  text-align: left;
+  top: 140px;
+  width: 30%;
+  height:250px;
+ 
+
+
+}
+.login-token h2 {
+
+	text-align:left; 
+	width:100%; 
+	float:left; 
+    direction: ltr;
+
+	border-top-left-radius:5px; 
+	border-top-right-radius:5px; 
+	color:black; 
+	font:17px "Lucida Grande", sans-serif; 
+	margin:0;
+	}
+
+/**************send money*****************/
+.wizard {
+	text-align: left;
+	padding: 0px 0px 0px 00px;
+	box-shadow:0 0 1px #000000;
+  	-webkit-transition:all 800ms linear 0s; -moz-transition:all 800ms linear 0s; -ms-transition:all 800ms linear 0s; -o-transition:all 800ms linear 0s;
+  	border-radius: 5px;
+    transition:all 800ms linear 0s;	
+    width: 73%;margin-left: 10.3%;
+    height: auto;
+}
+.wizard h2 {
+	background:#161616; 
+	text-align:left; 
+width: 98.5%;
+	float:left; 
+	padding: 15px 0px 15px 15px;
+	border-top-left-radius:5px; 
+	border-top-right-radius:5px;
+	color: #fff; 
+	font: 17px "Lucida Grande", sans-serif; 
+}
+.wizard table {
+	
+}
