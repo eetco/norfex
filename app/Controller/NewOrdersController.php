@@ -31,12 +31,9 @@ class NewOrdersController extends AppController
             'receiver',
             'summary',
             'payment',
-            array('bank' => array(
-                    'bank_confirmation',
-                    'bank_receipt',
-                    'finish'), 'cash' => array('cash_confirmation', 'finish')));
+           'BankConfirmation', 'finish');
 
-        $this->Auth->allow('wizard');
+        $this->Auth->allow('wizard', 'cash_confirmation');
     }
 
     function wizard($step = null, $transactionId = null)
@@ -48,21 +45,19 @@ class NewOrdersController extends AppController
         /**
          * sets vars before form render
          */
-        //$this->Session->destroy() ;
+        /*
+        $this->Session->destroy();
+        print_r($this->Session->read('Wizard.neworders'));
+        print_r($this->Session->read('Config.receiver_id'));
+        print_r($this->Session->read());
+        echo $this->Session->read('sender.last_Name');
+        print_r($this->Session->read('Wizard.neworders.payment.Payment.paymentMethod'));
+        print_r($this->Session->read('Wizard.neworders.general.WizardForm.totalamount'));
+        print_r($this->Session->read('Wizard.neworders.general.country_receiver'));
+        print_r($this->Session->read('Wizard.neworders.general'));
+        
+        */
 
-
-        //print_r($this->Session->read('Wizard.neworders'));
-        //print_r($this->Session->read('Config.receiver_id'));
-        //print_r( $this->Session->read());
-
-        // echo $this->Session->read('sender.last_Name');
-        // print_r( $this->Session->read('Wizard.neworders.payment.Payment.paymentMethod'));
-        //print_r( $this->Session->read('Wizard.neworders.general.WizardForm.totalamount'));
-
-
-        //	print_r( $codev ) ;
-
-        //print_r($this->Session->read('Wizard.neworders.general.country_receiver'));
 
         switch ($step) {
 
@@ -70,7 +65,7 @@ class NewOrdersController extends AppController
 
 
                 //$this->redirect("/wizard_forms/wizard/finish");
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                $this->set('title_for_layout', ' New orders - ' . $step);
 
                 // currency
                 $currencies = $this->Currency->find('all');
@@ -91,13 +86,13 @@ class NewOrdersController extends AppController
             case 'sender':
 
 
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                $this->set('title_for_layout', ' New orders - ' . $step);
                 break;
 
             case 'verification':
 
 
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                $this->set('title_for_layout', ' New orders - ' . $step);
 
                 $postalcodev = $this->Session->read('Wizard.neworders.sender.Sender.postal_code_sender');
                 $daycodev = $this->Session->read('Wizard.neworders.sender.Sender.dob_sender.day');
@@ -120,15 +115,16 @@ class NewOrdersController extends AppController
                 $countryname = $this->Session->read('Wizard.neworders.general.country_receiver');
 
                 $this->set(compact('countryname'));
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                $this->set('title_for_layout', ' New orders - ' . $step);
                 break;
 
 
             case 'summary':
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                $this->set('title_for_layout', ' New orders - ' . $step);
 
                 // fields
                 $fields = $this->Wizard->read();
+
                 // currency
                 $currencies = $this->Currency->find('list');
                 $siteCurrency = array_search('SEK', $currencies);
@@ -145,34 +141,32 @@ class NewOrdersController extends AppController
 
             case 'payment':
 
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+                $this->set('title_for_layout', ' New orders - ' . $step);
+
                 break;
 
             case 'bank_confirmation':
-                $this->set('title_for_layout', ' Wizard form - ' . $step);
+
+                $this->set('title_for_layout', ' New orders - ' . $step);
                 $fields = $this->Wizard->read();
                 $this->set(compact('fields'));
-                //echo 'salam';
-                //$this->Session->destroy() ;
+                //print_r($fields);
 
                 break;
 
-
             case 'bank_confirmation':
 
-                $this->set('title_for_layout', ' Wizard form - pay');
+                $this->set('title_for_layout', ' New orders - pay');
                 break;
 
             case 'finish':
 
-                //$orders['sender_paid_at'] = $this->Session->read( 'Config.date' )  ;
-                //$orders['peymentstatus'] = 'Waspaid' ;
-
-
+                /*
+                $orders['sender_paid_at'] = $this->Session->read( 'Config.date' )  ;
+                $orders['peymentstatus'] = 'Waspaid' ;
                 $this->Session->destroy();
-
                 $this->Session->setFlash(__('The transaction was successful.'));
-
+                */
 
                 print_r($transactionId);
 
@@ -198,6 +192,13 @@ class NewOrdersController extends AppController
     }
 
     function _processSender()
+    {
+
+        $this->WizardForm->set($this->request->data);
+        return $this->WizardForm->validates();
+    }
+
+    function _processFinish()
     {
 
         $this->WizardForm->set($this->request->data);
@@ -246,17 +247,18 @@ class NewOrdersController extends AppController
 
             $fields['sender']['Sender']['verification_code'] = $this->Session->read('Wizard.neworders.verification.NewCustomer.code');
 
-
             $fields['sender']['Sender']['verification_code'] = $this->Session->read('Wizard.neworders.verification.NewCustomer.code');
 
-            $fields['sender']['Sender']['country_receiver'] = $this->Sender->save($fields['sender']);
+            $fields['sender']['Sender']['country_receiver'] = $this->Session->read('Wizard.neworders.general.country_receiver');
+
+            $this->Sender->save($fields['sender']);
 
             $this->Receiver->save($fields['receiver']);
 
-            $this->loadModel('Sender', 'Receiver');
+
             //$post_id=$this->Sender->getLastInsertId();
 
-
+        
             $orders['Orders']['sender_id'] = $this->Sender->query(" SELECT MAX(id) 
                                                         FROM `senders`");
 
@@ -269,9 +271,9 @@ class NewOrdersController extends AppController
 
             // $this->Session->write( $peyment) ;
             $order = array('Orders' => array(
-                    'sender_id' => $receiver_id,
-                    'receiver_id' => $sender_id,
-                    'currency_sender' => 'SEK',
+                    'sender_id' =>      $sender_id      ,
+                    'receiver_id' =>      $receiver_id  ,
+                    'currency_sender' => 'SEK', 
                     'amount_sender' => $this->Session->read('Wizard.neworders.general.WizardForm.totalamount'),
                     'fee' => $this->Session->read('Wizard.neworders.general.WizardForm.expeditionfee'),
 
@@ -281,29 +283,36 @@ class NewOrdersController extends AppController
                     'payment_method_sender' => $this->request->data['Payment']['paymentMethod']));
 
             $this->Session->write('Config.sender_id', $order['Orders']['sender_id']);
+
             $this->Session->write('Config.receiver_id', $order['Orders']['receiver_id']);
 
             $this->Session->write('Config.ordernumber', $code['code1']);
 
-
-            $order['Orders']['paymentStatus'] = '0';
             $this->Session->write('Config.date', date('Y - m - d'));
 
             $this->Orders->save($order);
 
             // branch
             $peyment = $this->request->data['Payment']['paymentMethod'];
+            
             //$this->Session->Delete( 'Wizard.neworders.payment.Payment.paymentMethod' ) ;
             $this->Session->write('Wizard.neworders.payment.Payment.paymentMethod', $peyment);
-            $s = $this->Session->read('Wizard.neworders.payment.Payment.paymentMethod');
-            echo $s;
-            if ($s == 'cash') {
-                $this->Redirect('cash_confirmation');
-                //return false ;
-            } else {
-                $this->Wizard->branch('bank');
+            
+            //$paymentMethod = $this->Session->read('Wizard.neworders.payment.Payment.paymentMethod');
 
-                // return true ;
+            if ($peyment == 'cash') {
+
+               // $this->Wizard->branch('cash_confirmation');
+
+                $this->redirect('cash_confirmation');
+
+
+            } else {
+
+
+                $this->Wizard->branch('bank_confirmation');
+
+
             }
 
             return true;
@@ -315,6 +324,9 @@ class NewOrdersController extends AppController
     // branch bank
     function _processBankConfirmation()
     {
+        
+        
+        /*
         $fields = $this->Wizard->read();
         $code = @reset($fields['verification']);
 
@@ -330,8 +342,10 @@ class NewOrdersController extends AppController
 
 
         $this->Order->save();
-
-        return true;
+        
+        */
+  return true;
+        
 
     }
 
@@ -350,6 +364,8 @@ class NewOrdersController extends AppController
     {
         return true;
     }
+
+    
     //- end branch cash
 
     /**

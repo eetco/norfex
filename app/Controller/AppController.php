@@ -65,9 +65,8 @@ class AppController extends Controller {
     
      public function appError($error) {
         // custom logic goes here.
-
-           $this->Session->setFlash(__('The transaction was successful.'));
-           $this->Redirect(array('controller'   =>  'pages','action' => 'errornotadress'));
+           
+          
            
            
     }

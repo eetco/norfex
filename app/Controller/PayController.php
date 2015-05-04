@@ -61,8 +61,6 @@ class PayController extends AppController
     {
         $path_parts = pathinfo($_SERVER['PHP_SELF']);
 
-        //$payment_mehtod_sender='SHB';
-
         switch ($payment_mehtod_sender) {
 
             case 'swedbank':
@@ -152,51 +150,35 @@ class PayController extends AppController
             "token" => $this->token,
             "merchantId" => $this->merchantId,
             "request" => $RegisterRequest);
-        // print_r($InputParametersOfRegister);
-
-        ####  Display all parameters  ####
-        /*
-        echo "<h3><font color='gray'>Input parameters:</font></h3>";
-
-        echo "merchantId= " . $merchantId . "<br/>";
-        echo "token= " . $token . "<br/>";
-
-        echo "amount= " . $amount . "<br/>";
-        echo "currencyCode= " . $currencyCode . "<br/>";
-        echo "orderNumber= " . $orderNumber . "<br/>";
-        echo "redirect_url= " . $redirect_url . "<br/>";
-        */
-        /*
-        // you can also display this way
-        echo "<br/>Parameters in RegisterRequest<br/>"; 
-        echo "<pre>"; 
-        echo print_r($InputParametersOfRegister); 
-        echo "</pre>";
-        */
-        //$this->Render('');
-
-        ####  START REGISTER CALL  ####
-
 
         try {
-            if (strpos($_SERVER["HTTP_HOST"], 'uapp') > 0) {
-                // Creating new client having proxy
-                $client = new SoapClient($this->wsdl, array(
-                    'proxy_host' => "isa4",
-                    'proxy_port' => 8080,
-                    'trace' => true,
-                    'exceptions' => true));
-            } else {
-                // Creating new client without proxy
-                $client = new SoapClient($this->wsdl, array('trace' => true, 'exceptions' => true));
-            }
 
             $sender_id = $this->Session->read('Config.sender_id');
             $receiver_id = $this->Session->read('Config.receiver_id');
             $ordernumber = $this->Session->read('Config.ordernumber');
 
+
             if (isset($sender_id) && isset($receiver_id) && isset($ordernumber) && $ordernumber ==
-                $order_id) {
+                $order_id && $amount_sender == $this->Session->read('Wizard.neworders.general.WizardForm.totalamount') &&
+                $payment_mehtod_sender == $this->Session->read('Wizard.neworders.payment.Payment.paymentMethod') &&
+                $order_id == $this->Session->read('Config.ordernumber')) {
+
+
+                if (strpos($_SERVER["HTTP_HOST"], 'uapp') > 0) {
+                    // Creating new client having proxy
+                    $client = new SoapClient($this->wsdl, array(
+                        'proxy_host' => "isa4",
+                        'proxy_port' => 8080,
+                        'trace' => true,
+                        'exceptions' => true));
+                } else {
+                    // Creating new client without proxy
+
+                    $client = new SoapClient($this->wsdl, array('trace' => true, 'exceptions' => true));
+
+                }
+
+
                 //print_r($InputParametersOfRegister);
                 $OutputParametersOfRegister = $client->__call('Register', array("parameters" =>
                         $InputParametersOfRegister));
@@ -333,20 +315,23 @@ Transaction is not successful ! '));
                     'Orders.rate' => '"' . $this->Session->read('Wizard.neworders.general.priority_sender') .
                         '"'), $conditions //condition
                     );
-                    
-                    $this->Session->destroy();
+
+                $this->Session->destroy();
+                
+                $this->Session->setFlash(__('
+                                                Transaction is was successful ! '));
 
                 $this->redirect("/neworders/wizard/finish");
                 
+
             } else {
-                   $this->Session->setFlash(__('
-Transaction is not successful ! '));
+                $this->Session->setFlash(__('
+                                                Transaction is not successful ! '));
 
                 $this->redirect("/neworders/wizard/bank_confirmation");
 
             }
 
-          
 
         } // End try
         catch (SoapFault $fault) {
