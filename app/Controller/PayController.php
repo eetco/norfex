@@ -226,7 +226,7 @@ Transaction is not successful ! '));
         $path_parts = pathinfo($_SERVER["PHP_SELF"]);
 
         App::import('Vendor', 'ClassQueryRequest', array('file' =>
-                'nets/responsive/ClassQueryRequest.php'));
+                'nets/response/ClassQueryRequest.php'));
 
 
         if (isset($_GET['transactionId'])) {

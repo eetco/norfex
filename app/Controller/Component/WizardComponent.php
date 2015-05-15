@@ -378,6 +378,7 @@ class WizardComponent extends Component {
 			$branches[$name] = $value;
 
 			$this->Session->write($this->_branchKey, $branches);
+            
 		}
 	
 	/**

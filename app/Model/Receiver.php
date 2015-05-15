@@ -5,13 +5,13 @@ class Receiver extends AppModel {
 
 	public $validate = array(
 		// step 2 senders info
-		'firstName'       => array(
+		'first_name_receiver'       => array(
 			'notEmpty' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'Required'
 			)
 		),
-		'lastName'        => array(
+		'family_name_receiver'        => array(
 			'notEmpty' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'Required'

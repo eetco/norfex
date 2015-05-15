@@ -86,6 +86,7 @@ class PagesController extends AppController
 
         try {
             $this->render(implode('/', $path));
+            debug('app');
         }
         catch (MissingViewException $e) {
             if (Configure::read('debug')) {
@@ -117,72 +118,79 @@ class PagesController extends AppController
     public function login()
     {
 
-
+      
+        
         $this->Session->write('user_login', 'NOTSuccessful');
-
-        $ss = $this->Token->find('first', array('fields' => 'sn_info', 'order' => array
-                ('Token.id' => 'desc')));
-
-        //echo $ss['Token']['sn_info'];
-        /*
-        $sn = $this->Token->find('all', array('conditions' => array('otp_serial_number' =>
-        $this->data['password'], 'sn_info' => $this->data['sninfo'])));
-        */
-        $pcbview = $ss['Token']['sn_info'];
-
-        $this->set(compact('pcbview'));
-
-
-        $j = 0;
+        
 
         if (isset($this->data['otpkey']) and isset($this->data['username']) && isset($this->
             data['pin'])) {
 
-
-            
-            App::import('Vendor', 'seamoonapi', array('file' => 'seamoon/seamoonapi.php'));
-
-            $pcb = "";
-            $pcb = $_POST["sninfo"];
-
-            $key = new seamoonapi();
-
-            $otpkey = "";
-            $otpkey = $this->data['otpkey'];
-
-            $result = "";
-            $result = $key->checkpassword($pcb, $otpkey);
-
             $password1 = Security::hash($this->data['pin'], 'md5', true);
 
+            $options['joins'] = array(array(
+                    'table' => 'tokens',
+                    'alias' => 'token',
+                    'type' => 'INNER',
+                    'conditions' => array(
+                        'token.id = Sender.token_id ',
+                        'national_no_sender' => $this->data['username'],
+                        'verification_code' => $password1,
+                        )));
+            $options['fields'] = array(
+                'token.otp_sn_info',
+                'token.id',
+                'Sender.national_no_sender');
 
-            $national_no_sender = $this->Sender->find('all', array('fields' => array('national_no_sender'),
-                    'conditions' => array('national_no_sender' => $this->data['username'],
-                        'verification_code' => $password1)));
-            //print_r($national_no_sender[0]['Sender']);
 
+            $userstoken = $this->Sender->find('all', $options); //  $national_no_sender tabdile be userstoken
 
-            if (strlen($result) > 3 and isset($national_no_sender[0]['Sender'])) {
+            //print_r($userstoken[0]['token']['id']);
+            /*
+            $ss = $this->Token->find('all',array('conditions'=>array(
+            'token.id '=> $userstoken[0]['token']['id'],
+            )
+            )
+            );
+            
+            print_r($ss[0]['Token']['otp_sn_info']);
+            */
+            if (isset($userstoken[0]['Sender'])) {
+                App::import('Vendor', 'seamoonapi', array('file' => 'seamoon/seamoonapi.php'));
 
+                $pcb = "";
+                $pcb = $userstoken[0]['token']['otp_sn_info'];
 
+                $key = new seamoonapi();
+
+                $otpkey = "";
+                $otpkey = $this->data['otpkey'];
+
+                $result = "";
+                $result = $key->checkpassword($pcb, $otpkey);
+            }
+
+            if (isset($userstoken[0]['Sender']) && strlen($result) > 3) {
+
+                /*
+                
                 echo $this->Session->read('passwordc');
+                
                 if ($this->Session->read('passwordc') <> 'true') {
 
-                    $this->Token->save(array('sn_info' => $result));
+                $this->Token->save(array('sn_info' => $result));
 
                 }
 
                 $this->Session->destroy();
+                */
 
 
-                $idtoken = $this->Token->find('first', array('fields' => 'id', 'order' => array
-                        ('Token.id' => 'desc')));
+                $idtoken = $userstoken[0]['token']['id'];
 
-                $idtoken = $idtoken['Token']['id'] - 1;
+                $conditions = array('Token.id' => $idtoken);
 
-                $conditions = array('Token.sn_info' => $pcb, 'Token.id' => $idtoken);
-
-                $this->Token->updateAll(array('Token.otp_serial_number' => '"' . $otpkey . '"'
+                $this->Token->updateAll(array('Token.otp_sn_info' => '"' . $result . '"'
                         //condition
 
 
@@ -190,22 +198,19 @@ class PagesController extends AppController
 
                 $this->Session->write('user_login', 'Successful'); //ÇÑÓÇá ÓíÔä ÈÑÇí ÇÍÑÇÒ åæíÊ ˜ÇÑÈÑ
                 //$this->Redirect(array('controller'    =>  'Users','action' => 'Successlogin'));
-                echo 'salam';
-                $this->Redirect(array(
-                    'admin' => true,
-                    'controller' => 'users',
-                    'action' => 'successlogin'));
+                
+                 $this->redirect($this->Auth->redirect());
 
-            } else
-                if (isset($national_no_sender[0]['Sender']) and strlen($result) < 3) {
+            } elseif (isset($userstoken[0]['Sender']) and strlen($result) < 3) {
 
 
-                    $this->Session->setFlash(__("<a href='passwordsync'>password sync</a>"));
-                } else {
+                $this->Session->setFlash(__("<a href='passwordsync'>password sync</a>"));
+                
+            } else {
 
-                    $this->Session->setFlash(__("fields wrong!"));
+                $this->Session->setFlash(__("fields wrong!"));
 
-                }
+            }
 
 
         }
@@ -218,41 +223,60 @@ class PagesController extends AppController
     public function passwordsync()
     {
 
-        $ss = $this->Token->find('first', array('fields' => 'sn_info', 'order' => array
-                ('Token.id' => 'desc')));
 
-        $pcbview = $ss['Token']['sn_info'];
-
-        $this->set(compact('pcbview'));
+        $this->set('title_for_layout', 'Page - Password Sync');
 
         if (isset($this->data['otpkey']) and isset($this->data['username']) && isset($this->
             data['pin'])) {
 
-            App::import('Vendor', 'seamoonapi', array('file' => 'seamoon/seamoonapi.php'));
-
-            $pcb = "";
-            $pcb = @$_POST["sninfo"];
-
-            $key = new seamoonapi();
-
-            $otpkey = "";
-            $otpkey = $this->data['otpkey'];
-
-            $result = "";
-            $result = $key->passwordsyn($pcb, $otpkey);
-
             $password1 = Security::hash($this->data['pin'], 'md5', true);
 
+            $options['joins'] = array(array(
+                    'table' => 'tokens',
+                    'alias' => 'token',
+                    'type' => 'INNER',
+                    'conditions' => array(
+                        'token.id = Sender.token_id ',
+                        'national_no_sender' => $this->data['username'],
+                        'verification_code' => $password1,
+                        )));
+            $options['fields'] = array(
+                'token.otp_sn_info',
+                'token.id',
+                'Sender.national_no_sender');
 
-            $national_no_sender = $this->Sender->find('all', array('fields' => array('national_no_sender'),
-                    'conditions' => array('national_no_sender' => $this->data['username'],
-                        'verification_code' => $password1)));
+
+            $userstoken = $this->Sender->find('all', $options);
 
 
-            if (strlen($result) > 3 and isset($national_no_sender[0]['Sender'])) {
-                $this->Token->save(array('sn_info' => $result));
+            if (isset($userstoken[0]['Sender'])) {
+                App::import('Vendor', 'seamoonapi', array('file' => 'seamoon/seamoonapi.php'));
 
-                $this->Session->write('passwordc', 'true');
+                $pcb = "";
+                $pcb = $userstoken[0]['token']['otp_sn_info'];
+
+                $key = new seamoonapi();
+
+                $otpkey = "";
+                $otpkey = $this->data['otpkey'];
+
+                $result = "";
+                $result = $key->passwordsyn($pcb, $otpkey);
+
+            }
+
+
+            if (strlen($result) > 3 && isset($userstoken[0]['Sender'])) {
+
+                $idtoken = $userstoken[0]['token']['id'];
+
+                $conditions = array('Token.id' => $idtoken);
+
+                $this->Token->updateAll(array('Token.otp_sn_info' => '"' . $result . '"'
+                        //condition
+
+
+                    ), $conditions);
 
 
                 $this->Redirect(array('action' => 'login'));
@@ -273,6 +297,8 @@ class PagesController extends AppController
 
     public function errornotadress()
     {
+
+
 
     }
 }

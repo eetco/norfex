@@ -44,7 +44,7 @@ class AppController extends Controller {
             
             'Auth' => array(
             'loginAction' => array('admin'  =>  false,'controller' => 'pages', 'action' => 'login'),
-                'loginRedirect' => array('admin'=>true,'controller' => 'users', 'action' => 'Successlogin'),
+                'loginRedirect' => array('admin'=>true,'controller' => 'users', 'action' => 'successlogin'),
                 'loginUserRedirect' => array('controller' => 'pages', 'action' => 'display'),
                 'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
                 
@@ -62,15 +62,15 @@ class AppController extends Controller {
        $this->Auth->allow( 'admin_Successlogin');
         
     }
-    
+    /*
      public function appError($error) {
         // custom logic goes here.
            
           
-           
-           
+           // $this->Session->setFlash(__($error));
+           //$this->redirect(array('controller'   =>  'pages','action'    =>  'errornotadress'));
     }
-    
+    */
 
     function _checklogin(){
         

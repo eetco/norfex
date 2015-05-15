@@ -6,9 +6,9 @@
 	<?php echo $this->Form->create(); ?>
 		<tr><td>User name </td><td><?php echo $this->Form->input('username', array('label' => false,'name'=>'username',"required" => "true")); ?></td></tr>
 		<tr><td>Password </td><td><?php echo $this->Form->input('pin', array('label' => false,'type' => 'password','name'=>'pin',"required" => "true")); 
-        echo $this->Form->input('sninfo', array('label' => false,'name'=>'sninfo','type' => 'hidden','value' => "$pcbview")); ?>
+        ?>
         </td></tr>
-		<tr><td>Otp key</td><td><?php echo $this->Form->input('otpkey', array('label' => false,'type' => 'text','name'=>'password',"required" => "true")); ?>
+		<tr><td>Otp key</td><td><?php echo $this->Form->input('otpkey', array('label' => false,'type' => 'text','name'=>'otpkey',"required" => "true")); ?>
         
         <span style="float: right; text-align: left;margin-top: -14%;margin-right: -55%;"><?PHP echo $this->Session->flash(); ?></span>
         

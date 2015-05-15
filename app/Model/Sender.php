@@ -5,29 +5,44 @@ class Sender extends AppModel {
 
 	public $validate = array(
 		// step 2 senders info
-		'firstName'       => array(
+		'first_name_sender'       => array(
 			'notEmpty' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'Required'
 			)
 		),
-		'lastName'        => array(
+		'last_name_sender'        => array(
 			'notEmpty' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'Required'
 			)
 		),
-		'address'         => array(
+		'address_sender'         => array(
 			'notEmpty' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'Required'
 			)
 		),
-		'telephone'       => array(
+		'postal_code_sender'       => array(
 			'notEmpty' => array(
 				'rule'    => 'notEmpty',
 				'message' => 'Required'
 			)
 		),
+        
+		'city_sender'       => array(
+			'notEmpty' => array(
+				'rule'    => 'notEmpty',
+				'message' => 'Required'
+			)
+		),
+        
+        	'telephone_sender'       => array(
+			'notEmpty' => array(
+				'rule'    => 'notEmpty',
+				'message' => 'Required'
+			)
+		),
+        
 	);
 }
