@@ -13,8 +13,8 @@ class Userscontroller extends AppController
 
         parent::beforeFilter();
       
-if($this->Session->read('user_login')=='Successful')
-  $this->Auth->allow( 'admin_Successlogin');
+    if($this->Session->read('user_login')=='Successful')
+  $this->Auth->allow( 'admin_Successlogin','admin_logout');
   
     }
 
@@ -28,6 +28,14 @@ if($this->Session->read('user_login')=='Successful')
       
         
     }
+    public function admin_logout()
+    {
+       $this->Session->destroy();
+       $this->redirect($this->Auth->logout());
+        
+    }
+    
+    
     }
 
    ?>

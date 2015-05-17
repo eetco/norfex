@@ -58,6 +58,8 @@ class PagesController extends AppController
         parent::beforeFilter();
         $this->Auth->allow('display', 'errornotadress', 'home', 'login', 'passwordsync',
             'about', 'contact', 'order', 'rates', 'services');
+            
+            
 
 
     }
@@ -119,12 +121,15 @@ class PagesController extends AppController
     {
 
       
-        
+        if($this->Session->read('user_login')=='Successful')
+                
+                 $this->redirect($this->Auth->redirect());
+  
         $this->Session->write('user_login', 'NOTSuccessful');
         
 
-        if (isset($this->data['otpkey']) and isset($this->data['username']) && isset($this->
-            data['pin'])) {
+        if (isset($this->data['otpkey']) and isset($this->data['username']) && isset($this->data['pin']))
+         {
 
             $password1 = Security::hash($this->data['pin'], 'md5', true);
 
@@ -137,6 +142,7 @@ class PagesController extends AppController
                         'national_no_sender' => $this->data['username'],
                         'verification_code' => $password1,
                         )));
+                        
             $options['fields'] = array(
                 'token.otp_sn_info',
                 'token.id',
